@@ -1,3 +1,5 @@
+const fs        = require('fs');
+const path      = require('path');
 const Router    = require('koa-router');
 const User      = require('./models/user');
 const Message   = require('./models/message');
@@ -9,6 +11,26 @@ passport.use('local', require('./strategies/local'));
 const apiRouter = new Router({
     prefix: '/api/v1'
 });
+
+const router = new Router();
+
+
+router.get('/', /*checkAuth,*/ ctx => {
+    ctx.type = 'html';
+    ctx.body = fs.createReadStream(path.join(__dirname, '../../static/home.html'));
+});
+
+
+router.get('/signin', /*checkAuth,*/ ctx => {
+    ctx.type = 'html';
+    ctx.body = fs.createReadStream(path.join(__dirname, '../../static/signin.html'));
+});
+
+router.get('/signup', /*checkAuth,*/ ctx => {
+    ctx.type = 'html';
+    ctx.body = fs.createReadStream(path.join(__dirname, '../../static/signup.html'));
+});
+
 
 apiRouter.get('/', ctx => {
     ctx.body = 'HELLO WORLD';
@@ -65,5 +87,6 @@ apiRouter.post('/messages', /*checkAuth,*/ async ctx => {
 
 
 module.exports = [
+    router,
     apiRouter
 ];

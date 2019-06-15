@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>SIGNIN</title>
+</head>
+<body>
+    <h1>SIGNIN</h1>
+
+    <form action="/api/v1/signin" method="POST" enctype="application/x-www-form-urlencoded">
+        <p>Авторизация</p>
+        <label>
+            EMAIL:
+            <input type="text" name="email">
+        </label>
+        <br>
+        <label>
+            ПАРОЛЬ:
+            <input type="password" name="password">
+        </label>
+        <br>
+        <button type="submit">ВОЙТИ</button>
+    </form>
+</body>
+</html>

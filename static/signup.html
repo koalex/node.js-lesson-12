@@ -2,27 +2,11 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>NODE.js | lesson 11</title>
+    <title>SIGNUP</title>
 </head>
 <body>
-    <h1>NODE.js | lesson 11</h1>
+    <h1>SIGNUP</h1>
 
-    <form action="/api/v1/signin" method="POST" enctype="application/x-www-form-urlencoded">
-        <p>Авторизация</p>
-        <label>
-            EMAIL:
-            <input type="text" name="email">
-        </label>
-        <br>
-        <label>
-            ПАРОЛЬ:
-            <input type="password" name="password">
-        </label>
-        <br>
-        <button type="submit">ВОЙТИ</button>
-    </form>
-
-    <hr>
     <form action="/api/v1/signup" method="POST" enctype="application/x-www-form-urlencoded">
         <p>Создание пользователя</p>
 
@@ -60,27 +44,6 @@
         </label>
         <br>
         <button type="submit">СОЗДАТЬ</button>
-    </form>
-
-    <hr>
-
-
-    <form action="/api/v1/messages" method="POST" enctype="application/x-www-form-urlencoded">
-        <p>Отправка сообщения</p>
-
-        <label>
-            EMAIL:
-            <input type="text" name="email">
-        </label>
-        <br>
-        <label>
-            ПАРОЛЬ:
-            <input type="password" name="password">
-        </label>
-        <br>
-        <textarea name="message" cols="30" rows="10"></textarea>
-        <br>
-        <button type="submit">ОТПРАВИТЬ СООБЩЕНИЕ</button>
     </form>
 </body>
 </html>
