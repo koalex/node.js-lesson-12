@@ -11,6 +11,7 @@ const server = http.createServer(app.callback());
 /* MIDDLEWARES */
 [
     'static.js',
+    'log.js',
     'bodyparser.js'
 ]
 .map(mw => path.join(__dirname, 'middlewares', mw))
