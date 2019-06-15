@@ -16,6 +16,11 @@ const router = new Router();
 
 
 router.get('/', /*checkAuth,*/ ctx => {
+
+    /*if (!user) {
+        return ctx.redirect('/signin');
+    }*/
+
     ctx.type = 'html';
     ctx.body = fs.createReadStream(path.join(__dirname, '../../static/home.html'));
 });
@@ -29,11 +34,6 @@ router.get('/signin', /*checkAuth,*/ ctx => {
 router.get('/signup', /*checkAuth,*/ ctx => {
     ctx.type = 'html';
     ctx.body = fs.createReadStream(path.join(__dirname, '../../static/signup.html'));
-});
-
-
-apiRouter.get('/', ctx => {
-    ctx.body = 'HELLO WORLD';
 });
 
 apiRouter.get('/users', async ctx => {

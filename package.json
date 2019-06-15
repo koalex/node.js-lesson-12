@@ -28,6 +28,7 @@
     "config": "^3.1.0",
     "cross-env": "^5.2.0",
     "dotenv": "^8.0.0",
+    "jsonwebtoken": "^8.5.1",
     "koa": "^2.7.0",
     "koa-bodyparser": "^4.2.1",
     "koa-compose": "^4.1.0",
