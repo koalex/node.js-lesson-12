@@ -46,7 +46,7 @@ apiRouter.post('/signup', async ctx => {
 
     await user.save();
 
-    ctx.redirect('/');
+    ctx.redirect('/signin');
 });
 
 apiRouter.post('/signin', async ctx => {
@@ -59,7 +59,7 @@ apiRouter.post('/signin', async ctx => {
             return ctx.throw(500, info);
         }
 
-        ctx.body = 'Привет ' + user.name;
+        ctx.redirect('/');
     })(ctx);
 });
 
