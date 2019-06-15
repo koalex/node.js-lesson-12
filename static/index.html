@@ -7,7 +7,23 @@
 <body>
     <h1>NODE.js | lesson 11</h1>
 
-    <form action="/api/v1/users" method="POST" enctype="application/x-www-form-urlencoded">
+    <form action="/api/v1/signin" method="POST" enctype="application/x-www-form-urlencoded">
+        <p>Авторизация</p>
+        <label>
+            EMAIL:
+            <input type="text" name="email">
+        </label>
+        <br>
+        <label>
+            ПАРОЛЬ:
+            <input type="password" name="password">
+        </label>
+        <br>
+        <button type="submit">ВОЙТИ</button>
+    </form>
+
+    <hr>
+    <form action="/api/v1/signup" method="POST" enctype="application/x-www-form-urlencoded">
         <p>Создание пользователя</p>
 
         <label>
