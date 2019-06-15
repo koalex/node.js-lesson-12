@@ -2,11 +2,21 @@ const http   = require('http');
 const path   = require('path');
 const app    = new (require('koa'));
 // const router = new (require('koa-router'));
-
+const log    = require('./lib/logger');
 
 
 const server = http.createServer(app.callback());
 
+
+process
+    .on('unhandledRejection', err => {
+        log.fatal(err);
+        process.exit(1);
+    })
+    .on('uncaughtException', err => {
+        log.fatal(err);
+        process.exit(1);
+    });
 
 /* MIDDLEWARES */
 [
