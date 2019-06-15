@@ -21,6 +21,6 @@ module.exports = function (user) {
     return {
         access_token,
         refresh_token,
-        expires_in: expiresIn
+        expires_in: new Date(Date.now() + expiresIn * 1000)
     }
 };

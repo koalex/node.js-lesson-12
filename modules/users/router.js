@@ -5,6 +5,7 @@ const User      = require('./models/user');
 const Message   = require('./models/message');
 // const checkAuth = require('./middlewares/authLocal');
 const passport  = require('koa-passport');
+const genTokens = require('./controllers/generateTokens');
 
 passport.use('local', require('./strategies/local'));
 
@@ -59,7 +60,26 @@ apiRouter.post('/signin', async ctx => {
             return ctx.throw(500, info);
         }
 
-        ctx.redirect('/');
+        const tokens = genTokens(user);
+
+        ctx.cookies.set('x-access-token', tokens.access_token, {
+            // secure: true,
+            httpOnly: true,
+            signed: true,
+            origin: (new URL(ctx.href)).origin
+        });
+
+        ctx.cookies.set('x-refresh-token', tokens.refresh_token, {
+            // secure: true,
+            httpOnly: true,
+            signed: true,
+            origin: (new URL(ctx.href)).origin
+        });
+
+        ctx.type = 'json';
+        ctx.body = tokens;
+
+        // ctx.redirect('/');
     })(ctx);
 });
 

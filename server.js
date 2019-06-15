@@ -1,11 +1,14 @@
 require('dotenv').config();
 
-const http   = require('http');
-const path   = require('path');
-const app    = new (require('koa'));
+const http    = require('http');
+const path    = require('path');
+const app     = new (require('koa'));
+const KeyGrip = require('keygrip');
 // const router = new (require('koa-router'));
-const log    = require('./lib/logger');
+const log      = require('./lib/logger');
 const notifier = require('node-notifier');
+
+app.keys = new KeyGrip([process.env.KEYS], 'sha256');
 
 const server = http.createServer(app.callback());
 
