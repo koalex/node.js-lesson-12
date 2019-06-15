@@ -22,6 +22,7 @@ process
 [
     'static.js',
     'log.js',
+    'errHandler.js',
     'bodyparser.js'
 ]
 .map(mw => path.join(__dirname, 'middlewares', mw))

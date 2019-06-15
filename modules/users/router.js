@@ -38,44 +38,10 @@ apiRouter.post('/messages', async ctx => {
     const user = await User.findOne({ email: String(email) });
 
     if (!user) {
-        ctx.log.warn({
-            status: 400,
-            message: 'пользователь не найден',
-            url: ctx.request.url,
-            body: {
-                ...ctx.request.body
-            }
-        });
-
-        ctx.log.error({
-            status: 400,
-            message: 'пользователь не найден',
-            url: ctx.request.url,
-            body: {
-                ...ctx.request.body
-            }
-        });
         return ctx.throw(400, 'пользователь не найден');
     }
 
     if (!user.checkPassword(password)) {
-        ctx.log.warn({
-            status: 400,
-            message: 'пароль не правильный',
-            url: ctx.request.url,
-            body: {
-                ...ctx.request.body
-            }
-        });
-
-        ctx.log.error({
-            status: 400,
-            message: 'пароль не правильный',
-            url: ctx.request.url,
-            body: {
-                ...ctx.request.body
-            }
-        });
         return ctx.throw(400, 'пароль не правильный');
     }
 
