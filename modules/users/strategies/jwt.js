@@ -1,6 +1,6 @@
 const JwtStrategy   = require('passport-jwt').Strategy;
 const User          = require('../models/user');
-
+const jwt           = require('jsonwebtoken');
 
 const opts = {
     // issuer: 'http://jwtgenerate.com',
@@ -19,6 +19,14 @@ const opts = {
 module.exports = new JwtStrategy(opts, async (req, jwt_payload, done) => {
     const token = req.headers['x-access-token'] || req.query.access_token || req.cookies.get('x-access-token');
 
+
+    /*try {
+        jwt.verify(token, process.env.KEYS, {
+            jwtid: req.headers['x-finger-print']
+        });
+    } catch (e) {
+        return done(null, false);
+    }*/
     const userId = jwt_payload.user_id;
 
     try {

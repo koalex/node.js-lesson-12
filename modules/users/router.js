@@ -8,6 +8,7 @@ const passport  = require('koa-passport');
 const genTokens = require('./controllers/generateTokens');
 
 passport.use('local', require('./strategies/local'));
+passport.use('jwt', require('./strategies/jwt'));
 
 const apiRouter = new Router({
     prefix: '/api/v1'
@@ -16,7 +17,10 @@ const apiRouter = new Router({
 const router = new Router();
 
 
-router.get('/', /*checkAuth,*/ ctx => {
+router.get('/', passport.authenticate('jwt', {
+    session: false,
+    failureRedirect: '/signin'
+}), ctx => {
 
     /*if (!user) {
         return ctx.redirect('/signin');
@@ -37,7 +41,7 @@ router.get('/signup', /*checkAuth,*/ ctx => {
     ctx.body = fs.createReadStream(path.join(__dirname, '../../static/signup.html'));
 });
 
-apiRouter.get('/users', async ctx => {
+apiRouter.get('/users', passport.authenticate('jwt', {session: false}), async ctx => {
     ctx.type = 'json';
     ctx.body = await User.find();
 });
@@ -63,23 +67,25 @@ apiRouter.post('/signin', async ctx => {
         const tokens = genTokens(user);
 
         ctx.cookies.set('x-access-token', tokens.access_token, {
-            // secure: true,
+            expires: new Date(Date.now() + 5 * 60 * 1000),
+            secure: ctx.secure,
             httpOnly: true,
             signed: true,
             origin: (new URL(ctx.href)).origin
         });
 
         ctx.cookies.set('x-refresh-token', tokens.refresh_token, {
-            // secure: true,
+            expires: new Date(Date.now() + 86400 * 60 * 1000),
+            secure: ctx.secure,
             httpOnly: true,
             signed: true,
             origin: (new URL(ctx.href)).origin
         });
 
-        ctx.type = 'json';
-        ctx.body = tokens;
+        // ctx.type = 'json';
+        // ctx.body = tokens;
 
-        // ctx.redirect('/');
+        ctx.redirect('/');
     })(ctx);
 });
 
