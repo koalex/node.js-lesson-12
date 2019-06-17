@@ -125,6 +125,14 @@ apiRouter.post('/signout', passport.authenticate('jwt', {session: false}), async
     ctx.redirect('/signin');
 });
 
+router.get('/me', passport.authenticate('jwt', {session: false}), async ctx => {
+    ctx.type = 'json';
+    ctx.body = ctx.state.user;
+});
+
+apiRouter.get('/refresh-tokens', require('./controllers/refreshTokens'));
+
+
 module.exports = [
     router,
     apiRouter
