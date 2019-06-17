@@ -1,6 +1,7 @@
 const JwtStrategy   = require('passport-jwt').Strategy;
 const User          = require('../models/user');
-const jwt           = require('jsonwebtoken');
+const BlackToken    = require('../models/blacktoken');
+// const jwt           = require('jsonwebtoken');
 
 const opts = {
     // issuer: 'http://jwtgenerate.com',
@@ -17,11 +18,17 @@ const opts = {
 
 
 module.exports = new JwtStrategy(opts, async (req, jwt_payload, done) => {
-    const token = req.headers['x-access-token'] || req.query.access_token || req.cookies.get('x-access-token');
+    const access_token  = req.headers['x-access-token'] || req.query.access_token || req.cookies.get('x-access-token');
+    const refresh_token = req.headers['x-refresh-token'] || req.query.refresh_token || req.cookies.get('x-refresh-token');
 
+    const denied = await BlackToken.findOne({$or: [{token: access_token}, {token: refresh_token}]});
+
+    if (denied) {
+        return done(null, false);
+    }
 
     /*try {
-        jwt.verify(token, process.env.KEYS, {
+        jwt.verify(access_token, process.env.KEYS, {
             jwtid: req.headers['x-finger-print']
         });
     } catch (e) {

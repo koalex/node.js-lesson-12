@@ -3,6 +3,7 @@ const path      = require('path');
 const Router    = require('koa-router');
 const User      = require('./models/user');
 const Message   = require('./models/message');
+const BlackToken= require('./models/blacktoken');
 // const checkAuth = require('./middlewares/authLocal');
 const passport  = require('koa-passport');
 const genTokens = require('./controllers/generateTokens');
@@ -67,7 +68,7 @@ apiRouter.post('/signin', async ctx => {
         const tokens = genTokens(user);
 
         ctx.cookies.set('x-access-token', tokens.access_token, {
-            expires: new Date(Date.now() + 5 * 60 * 1000),
+            expires: new Date(Date.now() + 5 * 60 * 1000), // время жизни токена
             secure: ctx.secure,
             httpOnly: true,
             signed: true,
@@ -75,7 +76,7 @@ apiRouter.post('/signin', async ctx => {
         });
 
         ctx.cookies.set('x-refresh-token', tokens.refresh_token, {
-            expires: new Date(Date.now() + 86400 * 60 * 1000),
+            expires: new Date(Date.now() + 86400 * 60 * 1000), // время жизни refresh токена
             secure: ctx.secure,
             httpOnly: true,
             signed: true,
@@ -109,8 +110,20 @@ apiRouter.post('/messages', /*checkAuth,*/ async ctx => {
     ctx.redirect('/');
 });
 
+apiRouter.post('/signout', passport.authenticate('jwt', {session: false}), async ctx => {
+    const access_token  = ctx.headers['x-access-token'] || ctx.query.access_token || ctx.cookies.get('x-access-token');
+    const refresh_token = ctx.headers['x-refresh-token'] || ctx.query.refresh_token || ctx.cookies.get('x-refresh-token');
 
+    const blackAccessToken = new BlackToken({token: access_token});
+    const blackRefreshToken = new BlackToken({token: refresh_token});
 
+    await Promise.all([blackAccessToken.save(), blackRefreshToken.save()]);
+
+    ctx.cookies.set('x-access-token', null);
+    ctx.cookies.set('x-refresh-token', null);
+
+    ctx.redirect('/signin');
+});
 
 module.exports = [
     router,
