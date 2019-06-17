@@ -9,11 +9,14 @@ module.exports = function (user) {
     const KEY = process.env.KEYS;
 
     const access_token = jwt.sign({ user_id: user._id }, KEY, {
+        // issuer: 'http://jwtgenerate.com',
+        // audience: 'https://drom.ru',
         algorithm: 'HS512',
         expiresIn
     });
 
     const refresh_token = jwt.sign({ user_id: user._id }, KEY, {
+        issuer: 'http://localhost',
         algorithm: 'HS512',
         expiresIn: 86400 * 60 // 60 дней
     });
