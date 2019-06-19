@@ -47,8 +47,26 @@ apiRouter.get('/users', passport.authenticate('jwt', {session: false}), async ct
     ctx.body = await User.find();
 });
 
+const uuidv1 = require('uuid/v1');
+const nodemailer = require('../../lib/nodemailer');
 apiRouter.post('/signup', async ctx => {
     const user = new User(ctx.request.body);
+
+    user.activation_token = uuidv1();
+
+    await new Promise((resove, reject) => {
+        nodemailer.sendMail({
+            from: 'nodejs@mail.com',
+            to: 'nodemailerservice2019@gmail.com',
+            subject: 'Проверка',
+            // text: 'Привет мир',
+            html: `<a href="http://localhost:3000/api/v1/user-activation?activationToken=${user.activation_token}">ПОДТВЕРДИТЕ РЕГИСТРАЦИЮ</a>`
+        }, (err, info) => {
+            if (err) return reject(err);
+
+            resove(info);
+        });
+    });
 
     await user.save();
 
@@ -56,15 +74,27 @@ apiRouter.post('/signup', async ctx => {
 });
 
 apiRouter.get('/user-activation', async ctx => {
-    let activationToken;
-
     if (ctx.query && ctx.query.activationToken) {
-        activationToken = ctx.query.activationToken;
-        return ctx.body = activationToken;
+        const user = await User.findOne({activation_token: String(ctx.query.activationToken)});
+
+        if (!user) {
+            return ctx.throw(500, 'Пользователь не найден');
+        }
+
+        if (user.active) {
+            return ctx.throw(500, 'Пользователь уже активирован');
+        }
+
+        user.active = true;
+
+        await user.save();
+
+        ctx.redirect('/signin');
+    } else {
+        ctx.throw(400, 'токен не найден');
     }
 
 
-    ctx.throw(400, 'токен не найден');
 });
 
 apiRouter.post('/signin', async ctx => {
