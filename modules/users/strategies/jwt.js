@@ -41,6 +41,10 @@ module.exports = new JwtStrategy(opts, async (req, jwt_payload, done) => {
 
         if (!user) return done(null, false);
 
+        if (!user.active) {
+            return done(null, false, 'Пользователь не активирован');
+        }
+
         if (!req.state) req.state = {};
         req.state.user = user;
 

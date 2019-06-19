@@ -18,6 +18,10 @@ module.exports = new LocalStrategy({
         return done(null, false, 'Пользователь не найден');
     }
 
+    if (!user.active) {
+        return done(null, false, 'Пользователь не активирован');
+    }
+
     if (!user.checkPassword(password)) {
         return done(null, false, 'Пароль не правильный');
     }

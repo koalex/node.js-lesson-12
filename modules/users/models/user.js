@@ -2,6 +2,7 @@ const mongoose = require('../../../lib/mongoose');
 const crypto   = require('crypto');
 
 const userSchema = new mongoose.Schema({
+    active: { type: Boolean, default: false },
     name: { type: String },
     surname: { type: String },
     age: { type: Number },
