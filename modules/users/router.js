@@ -55,6 +55,18 @@ apiRouter.post('/signup', async ctx => {
     ctx.redirect('/signin');
 });
 
+apiRouter.get('/user-activation', async ctx => {
+    let activationToken;
+
+    if (ctx.query && ctx.query.activationToken) {
+        activationToken = ctx.query.activationToken;
+        return ctx.body = activationToken;
+    }
+
+
+    ctx.throw(400, 'токен не найден');
+});
+
 apiRouter.post('/signin', async ctx => {
     await passport.authenticate('local', async (err, user, info, status) => {
         if (err) {

@@ -3,6 +3,7 @@ const crypto   = require('crypto');
 
 const userSchema = new mongoose.Schema({
     active: { type: Boolean, default: false },
+    activation_token: { type: String },
     name: { type: String },
     surname: { type: String },
     age: { type: Number },
