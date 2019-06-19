@@ -4,6 +4,7 @@ const crypto   = require('crypto');
 const userSchema = new mongoose.Schema({
     active: { type: Boolean, default: false },
     activation_token: { type: String },
+    password_reset_token: { type: String },
     name: { type: String },
     surname: { type: String },
     age: { type: Number },
@@ -32,6 +33,7 @@ const userSchema = new mongoose.Schema({
     lang: { type: String, lowercase: true, enum: ['ru', 'en'] }, // ru en
     password_hash: { type: String },
     salt: { type: String },
+    created_at: { type: Date, default: Date.now }
 }, {
     versionKey: false,
     id: false,

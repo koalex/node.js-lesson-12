@@ -73,6 +73,16 @@ apiRouter.post('/signup', async ctx => {
     ctx.redirect('/signin');
 });
 
+// REST
+// GET /users
+// GET /users/1
+// GET /users/1/name
+// GET /users/1?field=name
+// POST /users
+// PUT /users/1
+// DELETE /users/1
+// PATCH /users/1/name
+
 apiRouter.get('/user-activation', async ctx => {
     if (ctx.query && ctx.query.activationToken) {
         const user = await User.findOne({activation_token: String(ctx.query.activationToken)});
@@ -140,6 +150,13 @@ apiRouter.get('/messages', async ctx => {
         ctx.body = await Message.find().lean().exec();
     }
 });
+
+apiRouter.get('/messages/:messageId', async ctx => {
+    ctx.type = 'json';
+    ctx.body = await Message.findOne({_id: String(ctx.params.messageId)}).lean().exec();
+});
+
+// СДЕЛАТЬ МЕТОД PUT
 
 apiRouter.post('/messages', /*checkAuth,*/ async ctx => {
     const message = new Message({
