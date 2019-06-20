@@ -1,0 +1,9 @@
+[submodule "modules/auth"]
+	path = modules/auth
+	url = https://github.com/koalex/node-lesson-auth.git
+[submodule "modules/users"]
+	path = modules/users
+	url = https://github.com/koalex/node-lesson-users.git
+[submodule "modules/messages"]
+	path = modules/messages
+	url = https://github.com/koalex/node-lesson-messages.git
