@@ -7,6 +7,7 @@ const KeyGrip = require('keygrip');
 // const router = new (require('koa-router'));
 const log      = require('./lib/logger');
 const notifier = require('node-notifier');
+const override = require('koa-override')
 
 app.keys = new KeyGrip([process.env.KEYS], 'sha256');
 
@@ -49,6 +50,7 @@ process
 .forEach(mw => {
     app.use(require(mw));
 });
+app.use(override());
 
 /* MODULES */
 require('./modules/users')(app);

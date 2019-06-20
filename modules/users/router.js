@@ -151,18 +151,38 @@ apiRouter.get('/messages', async ctx => {
     }
 });
 
-apiRouter.get('/messages/:messageId', async ctx => {
-    const message = await Message.findOne({_id: String(ctx.params.messageId)}).lean().exec();
+apiRouter.get('/messages/:messageId', passport.authenticate('jwt', {session: false}), async ctx => {
 
-    ctx.render(__dirname + '/../../tmpl/message_editor.pug', {
-        message: message,
-    });
+    console.log('1) current user=', ctx.state.user._id);
+
+    try {
+        const message = await Message.findOne({_id: String(ctx.params.messageId)}).lean().exec();
+
+        ctx.render(__dirname + '/../../tmpl/message_editor.pug', {
+            message: message,
+        });
+    } catch (err) {
+        ctx.throw(400, 'сообщение не найдено');
+    }
 });
 
-// СДЕЛАТЬ МЕТОД PUT
-apiRouter.put('/messages/:messageId', async ctx => {
-    ctx.type = 'json';
-    ctx.body = await Message.findOne({_id: String(ctx.params.messageId)}).lean().exec();
+apiRouter.put('/messages/:messageId', passport.authenticate('jwt', {session: false}), async ctx => {
+    let message;
+
+    try {
+        message = await Message.findOne({_id: String(ctx.params.messageId)}).lean().exec();
+    } catch (err) {
+        ctx.throw(400, 'сообщение не найдено, нечего редактировать');
+    }
+
+    if (String(message.user_id) !== String(ctx.state.user._id)) {
+        ctx.throw(400, 'Это не ваше сообщение');
+    }
+
+    await Message.updateOne({_id: String(ctx.params.messageId)}, {$set: {message: String(ctx.request.body.message)}},
+        {runValidators: true});
+
+    ctx.redirect('/api/v1/messages/' + String(ctx.params.messageId));
 });
 
 apiRouter.post('/messages', passport.authenticate('jwt', {session: false}), async ctx => {

@@ -8,8 +8,8 @@ html
         div(class="chat float-right")
 
             h4 Редактор сообщения
-            form(action='/api/v1/messages' method='PUT' enctype='application/x-www-form-urlencoded')
-                input(type="hidden" name="messsage_id" value=message._id)
+            form(action="/api/v1/messages/" + message._id method="POST" enctype="application/x-www-form-urlencoded")
+                input(type="hidden" name="_method" value="put")
                 textarea(name="message" cols="50" rows="3")= message.message
                 br
                 button(type="submit") СОХРАНИТЬ ИЗМЕНЕНИЯ
