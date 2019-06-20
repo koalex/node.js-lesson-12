@@ -42,7 +42,8 @@ process
     'static.js',
     'log.js',
     'errHandler.js',
-    'bodyparser.js'
+    'bodyparser.js',
+    'templates.js'
 ]
 .map(mw => path.join(__dirname, 'middlewares', mw))
 .forEach(mw => {

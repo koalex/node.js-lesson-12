@@ -152,11 +152,18 @@ apiRouter.get('/messages', async ctx => {
 });
 
 apiRouter.get('/messages/:messageId', async ctx => {
-    ctx.type = 'json';
-    ctx.body = await Message.findOne({_id: String(ctx.params.messageId)}).lean().exec();
+    const message = await Message.findOne({_id: String(ctx.params.messageId)}).lean().exec();
+
+    ctx.render(__dirname + '/../../tmpl/message_editor.pug', {
+        message: message,
+    });
 });
 
 // СДЕЛАТЬ МЕТОД PUT
+apiRouter.put('/messages/:messageId', async ctx => {
+    ctx.type = 'json';
+    ctx.body = await Message.findOne({_id: String(ctx.params.messageId)}).lean().exec();
+});
 
 apiRouter.post('/messages', passport.authenticate('jwt', {session: false}), async ctx => {
     const message = new Message({
