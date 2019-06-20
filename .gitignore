@@ -3,3 +3,4 @@ node_modules
 *.pid
 .env
 package-lock.json
+.idea/
