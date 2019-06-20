@@ -1,3 +1,4 @@
+require('dotenv').config();
 const fs        = require('fs');
 const path      = require('path');
 const Router    = require('koa-router');
@@ -7,6 +8,7 @@ const BlackToken= require('./models/blacktoken');
 // const checkAuth = require('./middlewares/authLocal');
 const passport  = require('koa-passport');
 const genTokens = require('./controllers/generateTokens');
+const crypto   = require('crypto');
 
 passport.use('local', require('./strategies/local'));
 passport.use('jwt', require('./strategies/jwt'));
@@ -235,6 +237,39 @@ router.get('/me', passport.authenticate('jwt', {session: false}), async ctx => {
 });
 
 apiRouter.get('/refresh-tokens', require('./controllers/refreshTokens'));
+
+router.get('/password', passport.authenticate('jwt', {session: false}), ctx => {
+    ctx.type = 'html';
+    ctx.body = fs.createReadStream(path.join(__dirname, '../../static/password.html'));
+});
+
+apiRouter.put('/updatePassword', passport.authenticate('jwt', {session: false}), async ctx => {
+
+    const user = ctx.state.user;
+
+    if (user.password_hash !== String(crypto.pbkdf2Sync(ctx.request.body.current_password, user.salt, 12000, 128, 'sha512'))) {
+        ctx.throw(400, 'Неправильный старый пароль');
+    }
+
+    user.password = String(ctx.request.body.new_password);
+
+    await user.save();
+
+    new Promise((resove, reject) => {
+        nodemailer.sendMail({
+            from: process.env.TEST_EMAIL_FROM,
+            to: process.env.TEST_EMAIL_FOR_NOTIFICATION,
+            subject: 'Проверка обновления пароля',
+            html: `<p>ваш пароль был обновлен ${new Date()}</p>`
+        }, (err, info) => {
+            if (err) return reject(err);
+
+            resove(info);
+        });
+    });
+
+    ctx.redirect('/signin');
+});
 
 
 module.exports = [
