@@ -12,26 +12,6 @@ app.keys = new KeyGrip([process.env.KEYS], 'sha256');
 
 const server = http.createServer(app.callback());
 
-
-try {
-    fs.symlinkSync(__dirname + '/modules/users', __dirname + '/node_modules/users', 'dir');
-
-} catch (e) {
-    // LOG
-}
-
-try {
-    fs.symlinkSync(__dirname + '/modules/auth', __dirname + '/node_modules/auth', 'dir');
-} catch (e) {
-    // LOG
-}
-
-try {
-    fs.symlinkSync(__dirname + '/modules/messages', __dirname + '/node_modules/messages', 'dir');
-} catch (e) {
-    // LOG
-}
-
 process
     .on('unhandledRejection', err => {
         if (process.env.NODE_ENV === 'development') {
