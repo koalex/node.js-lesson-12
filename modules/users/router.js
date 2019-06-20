@@ -153,8 +153,6 @@ apiRouter.get('/messages', async ctx => {
 
 apiRouter.get('/messages/:messageId', passport.authenticate('jwt', {session: false}), async ctx => {
 
-    console.log('1) current user=', ctx.state.user._id);
-
     try {
         const message = await Message.findOne({_id: String(ctx.params.messageId)}).lean().exec();
 
