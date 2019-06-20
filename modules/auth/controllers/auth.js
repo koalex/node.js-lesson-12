@@ -1,12 +1,12 @@
-const fs = require('fs');
+const fs        = require('fs');
 const passport  = require('../middlewares/passport');
-const path = require('path')
+const path      = require('path')
 
-const User = require('../../users/models/user');
-const BlackToken= require('../models/blacktoken');
+const User       = require('users/models/user');
+const BlackToken = require('../models/blacktoken');
 
-const genTokens = require('./generateTokens');
-const uuidv1    = require('uuid/v1');
+const genTokens  = require('./generateTokens');
+const uuidv1     = require('uuid/v1');
 const nodemailer = require('../../../lib/nodemailer');
 
 
@@ -53,7 +53,7 @@ exports.signinPost = async ctx => {
 
 exports.signupGet = async ctx => {
     ctx.type = 'html';
-    ctx.body = fs.createReadStream(path.join(__dirname, '../../static/signup.html'));
+    ctx.body = fs.createReadStream(path.join(__dirname, '../../../static/signup.html'));
 };
 
 exports.signupPost = async ctx => {

@@ -1,6 +1,6 @@
 const Router    = require('koa-router');
 const messages  = require('./controllers/messages');
-const passport  = require('../auth/middlewares/passport')
+const passport  = require('../auth/middlewares/passport');
 
 const apiRouter = new Router({
     prefix: '/api/v1'
