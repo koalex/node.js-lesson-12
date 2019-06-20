@@ -13,3 +13,7 @@ html
                 textarea(name="message" cols="50" rows="3")= message.message
                 br
                 button(type="submit") СОХРАНИТЬ ИЗМЕНЕНИЯ
+            br
+            form(action="/api/v1/messages/" + message._id method="POST" enctype="application/x-www-form-urlencoded")
+                input(type="hidden" name="_method" value="delete")
+                button(type="submit" style="color:red;") УДАЛИТЬ СООБЩЕНИЕ

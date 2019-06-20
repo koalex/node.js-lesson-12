@@ -185,6 +185,26 @@ apiRouter.put('/messages/:messageId', passport.authenticate('jwt', {session: fal
     ctx.redirect('/api/v1/messages/' + String(ctx.params.messageId));
 });
 
+apiRouter.delete('/messages/:messageId', passport.authenticate('jwt', {session: false}), async ctx => {
+    let message;
+
+    try {
+        message = await Message.findOne({_id: String(ctx.params.messageId)}).lean().exec();
+    } catch (err) {
+        ctx.throw(400, 'сообщение не найдено, нечего удалять');
+    }
+
+    if (String(message.user_id) !== String(ctx.state.user._id)) {
+        ctx.throw(400, 'Это не ваше сообщение');
+    }
+
+    await Message.deleteOne({_id: String(ctx.params.messageId)});
+
+    ctx.type = 'text/plain';
+    ctx.body = 'Сообщение удалено!';
+});
+
+
 apiRouter.post('/messages', passport.authenticate('jwt', {session: false}), async ctx => {
     const message = new Message({
         message: ctx.request.body.message,
