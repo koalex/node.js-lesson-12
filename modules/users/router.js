@@ -158,10 +158,10 @@ apiRouter.get('/messages/:messageId', async ctx => {
 
 // СДЕЛАТЬ МЕТОД PUT
 
-apiRouter.post('/messages', /*checkAuth,*/ async ctx => {
+apiRouter.post('/messages', passport.authenticate('jwt', {session: false}), async ctx => {
     const message = new Message({
         message: ctx.request.body.message,
-        user_id: user._id
+        user_id: ctx.state.user._id
     });
 
     await message.save();
