@@ -1,5 +1,5 @@
 const JwtStrategy   = require('passport-jwt').Strategy;
-const User          = require('../models/user');
+const User          = require('../../users/models/user');
 const BlackToken    = require('../models/blacktoken');
 // const jwt           = require('jsonwebtoken');
 

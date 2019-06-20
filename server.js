@@ -50,7 +50,9 @@ process
 });
 
 /* MODULES */
+require('./modules/auth')(app);
 require('./modules/users')(app);
+require('./modules/messages')(app);
 
 server.listen(3000, () => {
     console.log('SERVER LISTENING ON PORT: 3000');
