@@ -1,5 +1,5 @@
 {
-  "name": "lesson_11",
+  "name": "nodejs-websocket-chat",
   "version": "1.0.0",
   "description": "Node.js lesson 11",
   "main": "server.js",
@@ -24,6 +24,9 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "auth": "koalex/node-lesson-auth",
+    "users": "koalex/node-lesson-users",
+    "messages": "koalex/node-lesson-messages",
     "async-busboy": "^0.7.0",
     "bunyan": "^1.8.12",
     "config": "^3.1.0",
@@ -33,6 +36,8 @@
     "koa": "^2.7.0",
     "koa-bodyparser": "^4.2.1",
     "koa-compose": "^4.1.0",
+    "koa-conditional-get": "^2.0.0",
+    "koa-etag": "^3.0.0",
     "koa-logger": "^3.2.0",
     "koa-response-time": "^2.1.0",
     "koa-static": "^5.0.0",

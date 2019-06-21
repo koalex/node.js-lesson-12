@@ -1,42 +1,71 @@
 require('dotenv').config();
 
-const fs      = require('fs');
-const http    = require('http');
-const path    = require('path');
-const app     = new (require('koa'));
-const KeyGrip = require('keygrip');
-const log      = require('./lib/logger');
-const notifier = require('node-notifier');
+const http          = require('http');
+const path          = require('path');
+const config        = require('config');
+const app           = new (require('koa'));
+const KeyGrip       = require('keygrip');
+const log           = require('./lib/logger');
+const userAgent     = require('koa-useragent');
+const responseTime  = require('koa-response-time');
+const conditional   = require('koa-conditional-get');
+const etag          = require('koa-etag');
+const devLogger     = require('koa-logger');
+const notifier      = require('node-notifier');
 
-app.keys = new KeyGrip([process.env.KEYS], 'sha256');
+/*
+	If NGINX (or another proxy-server) then set to true
+	X-Forwarded-Host
+	X-Forwarded-Proto
+	X-Forwarded-For -> ip
+*/
+app.proxy = 'false' === process.env.PROXY ? false : Boolean(process.env.PROXY);
 
-const server = http.createServer(app.callback());
+app.keys  = new KeyGrip(process.env.KEYS.split(','), 'sha256');
+
+if ('development' === process.env.NODE_ENV) {
+    app.use(devLogger());
+}
+
+app.use(responseTime());
+app.use(userAgent);
+app.use(conditional());
+app.use(etag());
+app.use(async (ctx, next) => {
+    await next();
+    if (!ctx.expires) return;
+    ctx.expires = 2;
+    ctx.set('Expires', new Date(Date.now() + ctx.expires * 1e3).toUTCString());
+});
+
 
 process
     .on('unhandledRejection', err => {
-        if (process.env.NODE_ENV === 'development') {
+        if ('development' === process.env.NODE_ENV) {
             notifier.notify({
                 title: 'unhandledRejection',
                 message: err.message,
                 wait: true
             });
         }
+        console.error(err);
         log.fatal(err);
         process.exit(1);
     })
     .on('uncaughtException', err => {
-        if (process.env.NODE_ENV === 'development') {
+        if ('development' === process.env.NODE_ENV) {
             notifier.notify({
                 title: 'uncaughtException',
                 message: err.message,
                 wait: true
             });
         }
+        console.error(err);
         log.fatal(err);
         process.exit(1);
     });
 
-/* MIDDLEWARES */
+/*** DEFAULT MIDDLEWARES ***/
 [
     'static.js',
     'log.js',
@@ -48,11 +77,15 @@ process
     app.use(require(mw));
 });
 
-/* MODULES */
-require('./modules/auth')(app);
-require('./modules/users')(app);
-require('./modules/messages')(app);
+/*** MODULES ***/
+require('auth')(app);
+require('users')(app);
+require('messages')(app);
 
-server.listen(3000, () => {
-    console.log('SERVER LISTENING ON PORT: 3000');
-});
+const server = http.createServer(app.callback());
+
+if (!module.parent) {
+    server.listen(config.port, () => {
+        console.log('SERVER LISTENING ON PORT:', config.port);
+    });
+}
