@@ -7,3 +7,6 @@
 [submodule "modules/messages"]
 	path = modules/messages
 	url = https://github.com/koalex/node-lesson-messages.git
+[submodule "modules/server"]
+	path = modules/server
+	url = https://github.com/koalex/node-lesson-server.git
