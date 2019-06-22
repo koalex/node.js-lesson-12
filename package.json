@@ -4,7 +4,8 @@
   "description": "Node.js websocket chat",
   "scripts": {
     "bootstrap": "lerna bootstrap --ignore-prepublish --force-local --hoist=*",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "lerna run dev --stream"
   },
   "engines": {
     "node": ">=10.10.0",
