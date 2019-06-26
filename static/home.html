@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>HOME</title>
+    <style>
+        .logout-form {
+            display: flex;
+            justify-content: flex-end;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+</head>
+<body>
+    <form action="/api/v1/signout" method="POST" class="logout-form">
+        <button type="submit">ВЫЙТИ</button>
+    </form>
+    <h1>CHAT</h1>
+
+    <form id="newMessage" action="/api/v1/messages" method="POST" enctype="application/x-www-form-urlencoded">
+        <p>Отправка сообщения</p>
+
+        <!--<label>
+            EMAIL:
+            <input type="text" name="email">
+        </label>
+        <br>
+        <label>
+            ПАРОЛЬ:
+            <input type="password" name="password">
+        </label>-->
+        <textarea id="message" name="message" cols="30" rows="10"></textarea>
+        <br>
+        <button type="submit">ОТПРАВИТЬ СООБЩЕНИЕ</button>
+    </form>
+
+    <ul id="messages">
+        
+    </ul>
+
+    <script>
+        let users;
+        const messagesList = document.querySelector('#messages');
+        const sendMessageForm = document.querySelector('#newMessage');
+        const socket = io('/');
+
+        init();
+
+        async function init () {
+            sendMessageForm.addEventListener('submit', ev => {
+                ev.preventDefault();
+                sendMessage();
+            });
+
+            await getUsers();
+
+            await getMessages();
+
+            socket.on('NEW_MESSAGE', data => {
+                console.log('ПРИШЛИ ДАННЫЕ С СЕРВЕРА =', data);
+            });
+        }
+
+        async function getUsers () {
+            const response = await fetch('/api/v1/users', {
+                method: 'GET',
+                cache: 'no-cache'
+            });
+            users = await response.json();
+        }
+
+        async function getMessages () {
+            const response = await fetch('/api/v1/messages', {
+                method: 'GET',
+                cache: 'no-cache'
+            });
+            const data = await response.json();
+
+            addMessagesToList(data);
+        }
+
+        async function sendMessage () {
+            const message = sendMessageForm.querySelector('#message').value;
+
+            const formData = new FormData();
+
+            formData.append('message', message);
+
+            const response = await fetch('/api/v1/messages', {
+                method: 'POST',
+                cache: 'no-cache',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({message})
+            });
+        }
+
+        function addMessagesToList(msgs) {
+            if (Array.isArray(msgs)) {
+                msgs.forEach(msg => {
+                    const li = document.createElement('LI');
+                    li.textContent = msg.message;
+                    messagesList.appendChild(li);
+                });
+            }
+        }
+
+
+    </script>
+
+</body>
+</html>

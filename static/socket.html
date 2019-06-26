@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+</head>
+<body>
+    <h1>SOCKET</h1>
+
+    <script>
+        const socket = io('/', {
+            // transports: ['websocket']
+        });
+
+        socket.on('HELLO', data => {
+            console.log('ПРИШЛИ ДАННЫЕ С СЕРВЕРА =', data);
+        });
+
+        socket.on('connect', () => {
+            socket.emit('HELLO_FROM_CLIENT', 'ПРИВЕТ ОТ МЕНЯ');
+        });
+
+        socket.on('error', err => {
+            console.error('ОШИБКА =', err)
+        })
+
+    </script>
+</body>
+</html>
