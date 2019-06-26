@@ -1,6 +1,6 @@
 {
 	"name": "nodejs-websocket-chat",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "Node.js websocket chat",
 	"scripts": {
 		"bootstrap": "lerna bootstrap --ignore-prepublish --force-local --hoist=*",
@@ -43,6 +43,7 @@
 		"node-notifier": "^5.4.0",
 		"nodemailer": "^6.2.1",
 		"socket.io": "^2.2.0",
+		"socket.io-redis": "^5.2.0",
 		"uuid": "^3.3.2"
 	},
 	"devDependencies": {

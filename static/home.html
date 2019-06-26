@@ -64,6 +64,14 @@
             socket.on('SIGNOUT', () => {
                 signout.click();
             });
+
+            socket.on('CLIENT_CONNECTED', user => {
+                console.log('ПОДКЛЮЧИЛСЯ ПОЛЬЗОВАТЕЛЬ', user);
+            });
+
+            socket.on('CLIENT_DISCONNECTED', user => {
+                console.log('ОТКЛЮЧИЛСЯ ПОЛЬЗОВАТЕЛЬ', user);
+            });
         }
 
         async function getUsers () {
