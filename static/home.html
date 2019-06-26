@@ -13,7 +13,7 @@
 </head>
 <body>
     <form action="/api/v1/signout" method="POST" class="logout-form">
-        <button type="submit">ВЫЙТИ</button>
+        <button type="submit" id="signout">ВЫЙТИ</button>
     </form>
     <h1>CHAT</h1>
 
@@ -40,9 +40,9 @@
 
     <script>
         let users;
-        const messagesList = document.querySelector('#messages');
-        const sendMessageForm = document.querySelector('#newMessage');
-        const socket = io('/');
+        const messagesList      = document.querySelector('#messages');
+        const sendMessageForm   = document.querySelector('#newMessage');
+        const socket            = io('/');
 
         init();
 
@@ -58,6 +58,11 @@
 
             socket.on('NEW_MESSAGE', data => {
                 console.log('ПРИШЛИ ДАННЫЕ С СЕРВЕРА =', data);
+                addMessagesToList([data]);
+            });
+
+            socket.on('SIGNOUT', () => {
+                signout.click();
             });
         }
 

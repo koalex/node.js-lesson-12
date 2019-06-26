@@ -19,7 +19,8 @@ const notifier      = require('node-notifier');
 	X-Forwarded-Proto
 	X-Forwarded-For -> ip
 */
-app.proxy = 'false' === process.env.PROXY ? false : Boolean(process.env.PROXY);
+app.proxy = true;
+// app.proxy = 'false' === process.env.PROXY ? false : Boolean(process.env.PROXY);
 
 app.keys  = new KeyGrip(process.env.KEYS.split(','), 'sha256');
 
