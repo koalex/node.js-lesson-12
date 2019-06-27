@@ -101,7 +101,7 @@ require('./modules/messages')(app);
 require('./modules/users')(app);
 
 if (!module.parent) {
-    server.listen(Number(config.port) + Number(process.env.NODE_APP_INSTANCE), async () => {
+    server.listen(Number(config.port) + (process.env.NODE_APP_INSTANCE ? Number(process.env.NODE_APP_INSTANCE) : ''), async () => {
         console.log('SERVER LISTENING ON PORT:', config.port);
     });
 }

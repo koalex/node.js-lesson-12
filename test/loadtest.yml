@@ -1,0 +1,17 @@
+config:
+  target: http://localhost:3000
+  phases:
+    - duration: 30
+      arrivalRate: 10
+      rampTo: 30
+      name: "Прогрев"
+    - duration: 60
+      arrivalRate: 50
+      name: "Тест максимальной нагрузки"
+  defaults:
+    headers:
+      x-api-key: ""
+scenarios:
+  - flow:
+      - get:
+          url: "/signin"

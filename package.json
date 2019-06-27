@@ -5,6 +5,7 @@
 	"scripts": {
 		"bootstrap": "lerna bootstrap --ignore-prepublish --force-local --hoist=*",
 		"test": "echo \"Error: no test specified\" && exit 1",
+		"loadtest": "artillery run ./test/loadtest.yml",
 		"start": "cross-env NODE_ENV=production node server.js",
 		"dev": "cross-env NODE_ENV=development node nodemon.js"
 	},
@@ -23,6 +24,7 @@
 	"author": "",
 	"license": "MIT",
 	"dependencies": {
+		"artillery": "^1.6.0-28",
 		"async-busboy": "^0.7.0",
 		"bunyan": "^1.8.12",
 		"config": "^3.1.0",
