@@ -38,7 +38,7 @@ module.exports = {
             ref: 'origin/master',
             path: process.env.PM2_PATH,
             // 'post-setup': '',
-            'post-deploy': 'export NVM_DIR="${XDG_CONFIG_HOME/:-$HOME/.}nvm" && [ -s "$NVM_DIR/nvm.sh" ] && \\. "$NVM_DIR/nvm.sh" &&' +
+            'post-deploy': 'export NVM_DIR="${XDG_CONFIG_HOME/:-$HOME/.}nvm" && [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" &&' +
                 'cp /home/node/.env /home/node/app/current/.env && ' +
                 'npm install && git submodule init && git submodule update --remote && ' +
                 'npm run bootstrap && pm2 startOrReload ecosystem.config.js --env production'
