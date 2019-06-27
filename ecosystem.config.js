@@ -38,7 +38,7 @@ module.exports = {
             ref: 'origin/master',
             path: process.env.PM2_PATH,
             // 'post-setup': '',
-            'post-deploy': 'cp /home/node/.env /home/node/app/node.js-lesson-12/current/.env && ' +
+            'post-deploy': 'cp /home/node/.env /home/node/app/current/.env && ' +
                 'npm install && git submodule init && git submodule update --remote && ' +
                 'npm run bootstrap && pm2 startOrReload ecosystem.config.js --env production'
         }
