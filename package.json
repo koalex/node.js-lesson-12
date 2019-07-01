@@ -6,6 +6,7 @@
 		"bootstrap": "lerna bootstrap --ignore-prepublish --force-local --hoist=*",
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"loadtest": "artillery run ./test/loadtest.yml",
+		"login_loadtest": "artillery run ./test/login_loadtest.yml",
 		"start": "cross-env NODE_ENV=production node server.js",
 		"dev": "cross-env NODE_ENV=development node nodemon.js"
 	},

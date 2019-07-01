@@ -1,0 +1,30 @@
+config:
+  target: "http://localhost:3000"
+  phases:
+    - duration: 10
+      arrivalRate: 5
+      rampTo: 30
+      name: "Прогрев LOGIN"
+    - duration: 20
+      arrivalRate: 10
+      name: "Тест максимальной нагрузки LOGIN"
+  variables:
+    email:
+      - "email.akadem@gmail.com"
+    password:
+      - "123"
+  defaults:
+    headers:
+      x-api-key: ""
+scenarios:
+  - name: "Login and get list of users"
+    flow:
+      - get:
+          url: "/signin"
+      - post:
+          url: "/api/v1/signin"
+          form:
+            email: "{{ email }}"
+            password: "{{ password }}"
+      - get:
+          url: "/api/v1/users"
