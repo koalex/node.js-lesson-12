@@ -12,6 +12,7 @@ const conditional   = require('koa-conditional-get');
 const etag          = require('koa-etag');
 const devLogger     = require('koa-logger');
 const notifier      = require('node-notifier');
+const helmet        = require("koa-helmet");
 
 /*
 	If NGINX (or another proxy-server) then set to true
@@ -28,6 +29,7 @@ if ('development' === process.env.NODE_ENV) {
     app.use(devLogger());
 }
 
+app.use(helmet());
 app.use(responseTime());
 app.use(userAgent);
 app.use(conditional());

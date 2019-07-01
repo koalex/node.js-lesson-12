@@ -10,8 +10,9 @@ module.exports = {
         pass: process.env.REDIS_PASS || null
     },
     mongoose: {
-        uri: `mongodb://${process.env.MONGOOSE_URI}/${process.env.MONGOOSE_DB_NAME}`,
+        uri: `mongodb://${process.env.MONGOOSE_URI}/${process.env.MONGOOSE_DB_NAME}?replicaSet=chat_rs`,
         options: {
+            replicaSet: 'chat_rs',
             useNewUrlParser: true,
             useFindAndModify: false,
             useCreateIndex: false,
