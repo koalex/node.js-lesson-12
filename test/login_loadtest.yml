@@ -17,7 +17,7 @@ config:
     headers:
       x-api-key: ""
 scenarios:
-  - name: "Login, chat and get list of users"
+  - name: "Login, chat, get list of users and logout"
     flow:
       - get:
           url: "/signin"
@@ -27,10 +27,10 @@ scenarios:
             email: "{{ email }}"
             password: "{{ password }}"
       - loop:
-        - post:
-            url: "/api/v1/messages"
-            form:
-              message: "{{ $loopElement }}"
+          - post:
+              url: "/api/v1/messages"
+              form:
+                message: "{{ $loopElement }}"
         over:
           - "Hi John!"
           - "Hello Peter."
@@ -38,5 +38,44 @@ scenarios:
           - "Fine. And you?"
           - "Thanks. Goodbye!"
           - "Bye!"
+      - get:
+          url: "/api/v1/users"
+      - post:
+          url: "/api/v1/signout"
+  - name: "Login and logout"
+    flow:
+      - post:
+          url: "/api/v1/signin"
+          form:
+            email: "{{ email }}"
+            password: "{{ password }}"
+      - post:
+          url: "/api/v1/signout"
+  - name: "Login and chat"
+    flow:
+      - post:
+          url: "/api/v1/signin"
+          form:
+            email: "{{ email }}"
+            password: "{{ password }}"
+      - loop:
+          - post:
+              url: "/api/v1/messages"
+              form:
+                message: "{{ $loopElement }}"
+        over:
+          - "Hi John!"
+          - "Hello Peter."
+          - "How are you?"
+          - "Fine. And you?"
+          - "Thanks. Goodbye!"
+          - "Bye!"
+  - name: "Login and get users"
+    flow:
+      - post:
+          url: "/api/v1/signin"
+          form:
+            email: "{{ email }}"
+            password: "{{ password }}"
       - get:
           url: "/api/v1/users"
