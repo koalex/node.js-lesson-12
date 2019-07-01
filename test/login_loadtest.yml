@@ -1,12 +1,12 @@
 config:
   target: "http://localhost:3000"
   phases:
-    - duration: 10
-      arrivalRate: 5
+    - duration: 30
+      arrivalRate: 10
       rampTo: 30
       name: "Прогрев LOGIN"
-    - duration: 20
-      arrivalRate: 10
+    - duration: 60
+      arrivalRate: 50
       name: "Тест максимальной нагрузки LOGIN"
   variables:
     email:
