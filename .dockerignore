@@ -1,0 +1,6 @@
+db/rs0/*
+!db/rs0/.gitkeep
+db/rs1/*
+!db/rs1/.gitkeep
+db/rsh/*
+!db/rsh/.gitkeep
