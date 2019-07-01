@@ -26,5 +26,9 @@ scenarios:
           form:
             email: "{{ email }}"
             password: "{{ password }}"
+      - post:
+          url: "/api/v1/messages"
+          form:
+            message: "some text"
       - get:
           url: "/api/v1/users"
