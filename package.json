@@ -4,7 +4,7 @@
 	"description": "Node.js websocket chat",
 	"scripts": {
 		"bootstrap": "lerna bootstrap --ignore-prepublish --force-local --hoist=*",
-		"test": "echo \"Error: no test specified\" && exit 1",
+		"test": "mocha ./test/*.js --recursive --exit",
 		"loadtest": "artillery run ./test/loadtest.yml",
 		"start": "cross-env NODE_ENV=production node server.js",
 		"dev": "cross-env NODE_ENV=development node nodemon.js"
@@ -12,6 +12,12 @@
 	"engines": {
 		"node": ">=10.10.0",
 		"npm": ">=6"
+	},
+	"husky": {
+		"hooks": {
+			"pre-commit": "npm test",
+			"pre-push": "npm test"
+		}
 	},
 	"nodemonConfig": {
 		"ignore": [
@@ -49,8 +55,11 @@
 		"uuid": "^3.3.2"
 	},
 	"devDependencies": {
-		"nodemon": "^1.19.1",
+		"husky": "^2.7.0",
+		"lerna": "^3.15.0",
+		"mocha": "^6.1.4",
 		"ngrok": "^3.2.1",
-		"lerna": "^3.15.0"
+		"nodemon": "^1.19.1",
+		"supertest": "^4.0.2"
 	}
 }
