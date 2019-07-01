@@ -105,3 +105,5 @@ if (!module.parent) {
         console.log('SERVER LISTENING ON PORT:', config.port);
     });
 }
+
+module.exports = server;
